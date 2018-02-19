@@ -19,7 +19,6 @@ public class PersonController {
     private PersonService personService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
-    @ResponseBody
     public ResponseEntity<Person> findPersonById(@PathVariable Long id) {
 
         Optional<Person> person = personService.findById(id);
@@ -32,7 +31,6 @@ public class PersonController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/all")
-    @ResponseBody
     public ResponseEntity<Iterable> findAllPersons() {
 
         Iterable<Person> persons = personService.findAll();
@@ -45,7 +43,6 @@ public class PersonController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/cpf/{cpf}")
-    @ResponseBody
     public ResponseEntity<Person> findByCpf(@PathVariable String cpf) {
 
         Optional<Person> person = personService.findByCpf(cpf);
@@ -58,7 +55,6 @@ public class PersonController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/po/{id}")
-    @ResponseBody
     public ResponseEntity<ProductionOrder> findPoByUserId(@PathVariable long id) {
 
         ProductionOrder productionOrder = personService.findPoByUserId(id);
@@ -71,7 +67,6 @@ public class PersonController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/vehicles/{id}")
-    @ResponseBody
     public ResponseEntity<Iterable> findVehiclesByPersonId(@PathVariable long id) {
 
         Iterable<Vehicle> vehicles = personService.findVehiclesByPersonId(id);
@@ -84,7 +79,6 @@ public class PersonController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/create")
-    @ResponseBody
     public ResponseEntity<Person> createPerson(@RequestBody Person person) {
 
         Person personSaved = personService.createPerson(person);
@@ -97,7 +91,6 @@ public class PersonController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/associatevehicle")
-    @ResponseBody
     public ResponseEntity<Person> associateVehicle(@RequestParam("personid") long personid, @RequestParam("vehicleid") long vehicleid) {
 
         Person person = personService.associateVehicle(personid, vehicleid);
@@ -110,7 +103,6 @@ public class PersonController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/change/{id}")
-    @ResponseBody
     public ResponseEntity<Person> changePerson(@PathVariable long id, @RequestBody Person person) {
 
         Person personChanged = personService.changePerson(id, person);
@@ -123,7 +115,6 @@ public class PersonController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
-    @ResponseBody
     public ResponseEntity<Person> deletePerson(@PathVariable long id) {
 
         Person person = personService.deletePerson(id);
@@ -136,7 +127,6 @@ public class PersonController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/deleteall")
-    @ResponseBody
     public ResponseEntity<String> deleteAllPersons() {
 
         personService.deleteAllPersons();

@@ -19,7 +19,6 @@ public class VehicleController {
     private VehicleService vehicleService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
-    @ResponseBody
     public ResponseEntity<Vehicle> findVehicleById(@PathVariable Long id) {
 
         Optional<Vehicle> vehicle = vehicleService.findById(id);
@@ -32,7 +31,6 @@ public class VehicleController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/plate/{plate}")
-    @ResponseBody
     public ResponseEntity<Vehicle> findVehicleByPlate(@PathVariable String plate) {
 
         Optional<Vehicle> vehicle = vehicleService.findByPlate(plate);
@@ -45,7 +43,6 @@ public class VehicleController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/all")
-    @ResponseBody
     public ResponseEntity<Iterable> findAllVehicles() {
 
         Iterable<Vehicle> vehicles = vehicleService.findAll();
@@ -54,7 +51,6 @@ public class VehicleController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/po/{id}")
-    @ResponseBody
     public ResponseEntity<ProductionOrder> findPoSByVehicleId(@PathVariable Long id) {
 
         Optional<ProductionOrder> productionOrder = vehicleService.findPoByVehicleId(id);
@@ -67,7 +63,6 @@ public class VehicleController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/create")
-    @ResponseBody
     public ResponseEntity<Vehicle> createVehicle(@RequestBody Vehicle vehicle) {
 
         Vehicle vehicleCreated = vehicleService.createVehicle(vehicle);
@@ -80,7 +75,6 @@ public class VehicleController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/change/{id}")
-    @ResponseBody
     public ResponseEntity<Vehicle> changePerson(@PathVariable long id, @RequestBody Vehicle vehicle) {
 
         Vehicle vehicleChanged = vehicleService.changeVehicle(id, vehicle);
@@ -92,7 +86,6 @@ public class VehicleController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
-    @ResponseBody
     public ResponseEntity<Vehicle> deleteVehicle(@PathVariable long id) {
 
         Vehicle vehicleDeleted = vehicleService.deleteVehicle(id);
@@ -105,7 +98,6 @@ public class VehicleController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/deleteall")
-    @ResponseBody
     public ResponseEntity<String> deleteAllVehicles() {
 
         vehicleService.deleteAllVehicles();

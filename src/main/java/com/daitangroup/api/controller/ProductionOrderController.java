@@ -18,7 +18,6 @@ public class ProductionOrderController {
     ProductionOrderService productionOrderService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
-    @ResponseBody
     public ResponseEntity<ProductionOrder> findProductionOrderById(@PathVariable Long id) {
 
         Optional<ProductionOrder> productionOrder = productionOrderService.findById(id);
@@ -31,7 +30,6 @@ public class ProductionOrderController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/all")
-    @ResponseBody
     public ResponseEntity<Iterable> findAllProductionOrders() {
 
         Iterable<ProductionOrder> productionOrders = productionOrderService.findAll();
@@ -44,7 +42,6 @@ public class ProductionOrderController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/create")
-    @ResponseBody
     public ResponseEntity<ProductionOrder> createProductionOrder(@RequestParam("personid") long personid, @RequestParam("vehicleid") long vehicleid, @RequestBody ProductionOrder productionOrder) {
 
         ProductionOrder productionOrderSaved = productionOrderService.createProductionOrder(personid, vehicleid, productionOrder);
@@ -57,7 +54,6 @@ public class ProductionOrderController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/change")
-    @ResponseBody
     public ResponseEntity<ProductionOrder> changeProductionOrder(@RequestParam("productionid") long productionId, @RequestParam("personid") Optional<Long> personid, @RequestParam("vehicleid") Optional<Long> vehicleid, @RequestBody ProductionOrder productionOrder) {
 
         ProductionOrder productionOrderChanged = productionOrderService.changeProductionOrder(productionId, personid, vehicleid, productionOrder);
@@ -70,7 +66,6 @@ public class ProductionOrderController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
-    @ResponseBody
     public ResponseEntity<ProductionOrder> deleteProductionOrder(@PathVariable long id) {
 
         ProductionOrder productionOrderToDelete = productionOrderService.deleteProductionOrder(id);
@@ -83,7 +78,6 @@ public class ProductionOrderController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/deleteall")
-    @ResponseBody
     public ResponseEntity<String> deleteAllProductionOrders() {
 
         productionOrderService.deleteAllProductionOrders();

@@ -80,7 +80,9 @@ public class PersonService {
         if(person.isPresent() && vehicle.isPresent()) {
             Set<Vehicle> vehicles = person.get().getVehicle();
             Person personPresent = person.get();
-            vehicles.add(vehicle.get());
+            Vehicle vehiclePresent = vehicle.get();
+            vehiclePresent.setPerson(personPresent);
+            vehicles.add(vehicleRepository.save(vehiclePresent));
             personPresent.setVehicle(vehicles);
             return personRepository.save(personPresent);
         }
