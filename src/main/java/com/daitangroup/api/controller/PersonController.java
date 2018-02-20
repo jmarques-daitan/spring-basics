@@ -30,7 +30,7 @@ public class PersonController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/all")
+    @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Iterable> findAllPersons() {
 
         Iterable<Person> persons = personService.findAll();

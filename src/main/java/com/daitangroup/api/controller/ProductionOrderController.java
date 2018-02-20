@@ -29,7 +29,7 @@ public class ProductionOrderController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/all")
+    @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Iterable> findAllProductionOrders() {
 
         Iterable<ProductionOrder> productionOrders = productionOrderService.findAll();

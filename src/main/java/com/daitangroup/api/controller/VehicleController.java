@@ -42,7 +42,7 @@ public class VehicleController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/all")
+    @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Iterable> findAllVehicles() {
 
         Iterable<Vehicle> vehicles = vehicleService.findAll();

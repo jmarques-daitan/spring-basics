@@ -82,9 +82,10 @@ public class PersonService {
             Person personPresent = person.get();
             Vehicle vehiclePresent = vehicle.get();
             vehiclePresent.setPerson(personPresent);
-            vehicles.add(vehicleRepository.save(vehiclePresent));
-            personPresent.setVehicle(vehicles);
-            return personRepository.save(personPresent);
+            vehicleRepository.save(vehiclePresent);
+            //vehicles.add(vehiclePresent);
+            //personPresent.setVehicle(vehicles);
+            return personPresent;
         }
 
         return null;
