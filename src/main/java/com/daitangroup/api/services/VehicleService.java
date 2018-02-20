@@ -1,7 +1,9 @@
 package com.daitangroup.api.services;
 
+import com.daitangroup.api.model.Person;
 import com.daitangroup.api.model.ProductionOrder;
 import com.daitangroup.api.model.Vehicle;
+import com.daitangroup.api.repository.PersonRepository;
 import com.daitangroup.api.repository.ProductionOrderRepository;
 import com.daitangroup.api.repository.VehicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,27 +19,30 @@ public class VehicleService {
     @Autowired
     private ProductionOrderRepository productionOrderRepository;
 
-    public Optional<Vehicle> findById(long id) {
+    @Autowired
+    private PersonRepository personRepository;
+
+    public Optional<Vehicle> findByVehicleId(long id) {
         return vehicleRepository.findById(id);
     }
 
-    public Optional<Vehicle> findByPlate(String plate) {
+    public Optional<Vehicle> findVehicleByPlate(String plate) {
         return vehicleRepository.findByPlate(plate);
     }
 
-    public Iterable<Vehicle> findAll() {
+    public Iterable<Vehicle> findAllVehicles() {
         return vehicleRepository.findAll();
     }
 
-    public Optional<ProductionOrder> findPoByVehicleId(long id) {
+    public Iterable<Vehicle> findVehiclesByPersonId(long id) {
 
-        Optional<Vehicle> vehicle = vehicleRepository.findById(id);
+        Optional<Person> personResult = personRepository.findById(id);
 
-        if(vehicle.isPresent()){
-            return productionOrderRepository.findByVehicle(vehicle.get());
+        if(personResult.isPresent()) {
+            return personResult.get().getVehicles();
         }
 
-        return Optional.empty();
+        return null;
     }
 
     public Vehicle createVehicle(Vehicle vehicle) {
@@ -51,31 +56,30 @@ public class VehicleService {
         return vehicleRepository.save(vehicle);
     }
 
-    public Vehicle changeVehicle(long id, Vehicle vehicle) {
+    public Vehicle updateVehicle(Vehicle vehicle) {
 
-        Optional<Vehicle> vehicleToChange = vehicleRepository.findById(id);
+        Optional<Vehicle> vehicleResult = vehicleRepository.findById(vehicle.getId());
 
-        if(vehicleToChange.isPresent()) {
-            Vehicle vehicleToSet = vehicleToChange.get();
+        if(vehicleResult.isPresent()) {
 
-            if(vehicle.getPlate() != null) {
-                vehicleToSet.setPlate(vehicle.getPlate());
+            if(vehicle.getPlate() == null) {
+                vehicle.setPlate(vehicleResult.get().getPlate());
             }
 
-            if(vehicle.getModel() != null) {
-                vehicleToSet.setModel(vehicle.getModel());
+            if(vehicle.getModel() == null) {
+                vehicle.setModel(vehicleResult.get().getModel());
             }
 
-            if(vehicle.getColor() != null) {
-                vehicleToSet.setColor(vehicle.getColor());
+            if(vehicle.getColor() == null) {
+                vehicle.setColor(vehicleResult.get().getColor());
             }
-            return vehicleRepository.save(vehicleToSet);
+            return vehicleRepository.save(vehicle);
         }
 
         return null;
     }
 
-    public Vehicle deleteVehicle(long id) {
+    public Vehicle deleteVehicleById(long id) {
 
         Optional<Vehicle> vehicleToDelete = vehicleRepository.findById(id);
 

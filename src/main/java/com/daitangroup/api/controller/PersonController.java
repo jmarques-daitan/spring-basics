@@ -21,10 +21,10 @@ public class PersonController {
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     public ResponseEntity<Person> findPersonById(@PathVariable Long id) {
 
-        Optional<Person> person = personService.findById(id);
+        Optional<Person> personResult = personService.findPersonById(id);
 
-        if (person.isPresent()) {
-            return new ResponseEntity<>(person.get(), HttpStatus.OK);
+        if (personResult.isPresent()) {
+            return new ResponseEntity<>(personResult.get(), HttpStatus.OK);
         }
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -33,46 +33,22 @@ public class PersonController {
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Iterable> findAllPersons() {
 
-        Iterable<Person> persons = personService.findAll();
+        Iterable<Person> personsResult = personService.findAllPersons();
 
-        if (persons.iterator().hasNext()) {
-            return new ResponseEntity<>(persons, HttpStatus.OK);
+        if (personsResult.iterator().hasNext()) {
+            return new ResponseEntity<>(personsResult, HttpStatus.OK);
         }
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/cpf/{cpf}")
-    public ResponseEntity<Person> findByCpf(@PathVariable String cpf) {
+    public ResponseEntity<Person> findPersonByCpf(@PathVariable String cpf) {
 
-        Optional<Person> person = personService.findByCpf(cpf);
+        Optional<Person> personResult = personService.findPersonByCpf(cpf);
 
-        if (person.isPresent()) {
-            return new ResponseEntity<>(person.get(), HttpStatus.OK);
-        }
-
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    @RequestMapping(method = RequestMethod.GET, value = "/po/{id}")
-    public ResponseEntity<ProductionOrder> findPoByUserId(@PathVariable long id) {
-
-        ProductionOrder productionOrder = personService.findPoByUserId(id);
-
-        if (productionOrder != null) {
-            return new ResponseEntity<>(productionOrder, HttpStatus.OK);
-        }
-
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    @RequestMapping(method = RequestMethod.GET, value = "/vehicles/{id}")
-    public ResponseEntity<Iterable> findVehiclesByPersonId(@PathVariable long id) {
-
-        Iterable<Vehicle> vehicles = personService.findVehiclesByPersonId(id);
-
-        if (vehicles != null && vehicles.iterator().hasNext()) {
-            return new ResponseEntity<>(vehicles, HttpStatus.OK);
+        if (personResult.isPresent()) {
+            return new ResponseEntity<>(personResult.get(), HttpStatus.OK);
         }
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -91,9 +67,9 @@ public class PersonController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/associatevehicle")
-    public ResponseEntity<Person> associateVehicle(@RequestParam("personid") long personid, @RequestParam("vehicleid") long vehicleid) {
+    public ResponseEntity<Person> addVehicleToPerson(@RequestParam("personid") long personid, @RequestParam("vehicleid") long vehicleid) {
 
-        Person person = personService.associateVehicle(personid, vehicleid);
+        Person person = personService.addVehicleToPerson(personid, vehicleid);
 
         if (person != null) {
             return new ResponseEntity<>(person, HttpStatus.OK);
@@ -103,12 +79,13 @@ public class PersonController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/change/{id}")
-    public ResponseEntity<Person> changePerson(@PathVariable long id, @RequestBody Person person) {
+    public ResponseEntity<Person> updatePerson(@PathVariable long id, @RequestBody Person person) {
 
-        Person personChanged = personService.changePerson(id, person);
+        person.setId(id);
+        Person personUpdated = personService.updatePerson(person);
 
         if(person != null) {
-            return new ResponseEntity<>(personChanged, HttpStatus.OK);
+            return new ResponseEntity<>(personUpdated, HttpStatus.OK);
         }
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -117,10 +94,10 @@ public class PersonController {
     @RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
     public ResponseEntity<Person> deletePerson(@PathVariable long id) {
 
-        Person person = personService.deletePerson(id);
+        Person personDeleted = personService.deletePerson(id);
 
-        if(person != null){
-            return new ResponseEntity<>(person, HttpStatus.OK);
+        if(personDeleted != null){
+            return new ResponseEntity<>(personDeleted, HttpStatus.OK);
         }
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -24,96 +24,68 @@ public class PersonService {
     @Autowired
     private VehicleRepository vehicleRepository;
 
-    public Optional<Person> findById(long id) {
+    public Optional<Person> findPersonById(long id) {
         return personRepository.findById(id);
     }
 
-    public Iterable<Person> findAll() {
+    public Iterable<Person> findAllPersons() {
         return personRepository.findAll();
     }
 
-    public Optional<Person> findByCpf(String cpf) {
+    public Optional<Person> findPersonByCpf(String cpf) {
         return personRepository.findByCpf(cpf);
-    }
-
-    public ProductionOrder findPoByUserId(long id) {
-
-        Optional<Person> person = personRepository.findById(id);
-
-        if(person.isPresent()) {
-            Optional<ProductionOrder> productionOrder = productionOrderRepository.findByPerson(person.get());
-            if(productionOrder.isPresent()) {
-                return productionOrder.get();
-            }
-        }
-
-        return null;
-    }
-
-    public Iterable<Vehicle> findVehiclesByPersonId(long id) {
-
-        Optional<Person> person = personRepository.findById(id);
-
-        if(person.isPresent()) {
-            return person.get().getVehicle();
-        }
-
-        return null;
     }
 
     public Person createPerson(Person person) {
 
-        Optional<Person> personChecked = personRepository.findByCpf(person.getCpf());
+        Optional<Person> personToCheck = personRepository.findByCpf(person.getCpf());
 
-        if(personChecked.isPresent()){
+        if(personToCheck.isPresent()){
             return null;
         }
 
         return personRepository.save(person);
     }
 
-    public Person associateVehicle(long personId, long vehicleId) {
+    public Person addVehicleToPerson(long personId, long vehicleId) {
 
-        Optional<Person> person = personRepository.findById(personId);
-        Optional<Vehicle> vehicle = vehicleRepository.findById(vehicleId);
+        Optional<Person> personResult = personRepository.findById(personId);
+        Optional<Vehicle> vehicleResult = vehicleRepository.findById(vehicleId);
 
-        if(person.isPresent() && vehicle.isPresent()) {
-            Set<Vehicle> vehicles = person.get().getVehicle();
-            Person personPresent = person.get();
-            Vehicle vehiclePresent = vehicle.get();
+        if(personResult.isPresent() && vehicleResult.isPresent()) {
+            Set<Vehicle> vehicles = personResult.get().getVehicles();
+            Person personPresent = personResult.get();
+            Vehicle vehiclePresent = vehicleResult.get();
             vehiclePresent.setPerson(personPresent);
             vehicleRepository.save(vehiclePresent);
-            //vehicles.add(vehiclePresent);
-            //personPresent.setVehicle(vehicles);
             return personPresent;
         }
 
         return null;
     }
 
-    public Person changePerson(long id, Person person) {
+    public Person updatePerson(Person person) {
 
-        Optional<Person> personToChange = personRepository.findById(id);
+        Optional<Person> personResult = personRepository.findById(person.getId());
 
-        if(personToChange.isPresent()) {
-            Person personToSet = personToChange.get();
+        if(personResult.isPresent()) {
 
-            if(person.getFirstName() != null) {
-                personToSet.setFirstName(person.getFirstName());
+            if(person.getFirstName() == null) {
+                person.setFirstName(personResult.get().getFirstName());
             }
 
-            if(person.getLastName() != null) {
-                personToSet.setLastName(person.getLastName());
+            if(person.getLastName() == null) {
+                person.setLastName(personResult.get().getLastName());
             }
 
-            if(person.getCpf() != null) {
-                personToSet.setCpf(person.getCpf());
+            if(person.getCpf() == null) {
+                person.setCpf(personResult.get().getCpf());
             }
 
-            if(person.getPhone() != null) {
-                personToSet.setPhone(person.getPhone());
+            if(person.getPhone() == null) {
+                person.setPhone(personResult.get().getPhone());
             }
-            return personRepository.save(personToSet);
+            return personRepository.save(person);
         }
         return null;
     }

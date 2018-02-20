@@ -23,22 +23,47 @@ public class ProductionOrderService {
     @Autowired
     private VehicleRepository vehicleRepository;
 
-    public Optional<ProductionOrder> findById(long id) {
+    public Optional<ProductionOrder> findProductionOrderById(long id) {
         return productionOrderRepository.findById(id);
     }
 
-    public Iterable<ProductionOrder> findAll() {
+    public Iterable<ProductionOrder> findAllProductionOrders() {
         return productionOrderRepository.findAll();
+    }
+
+    public ProductionOrder findProductionOrderByUserId(long id) {
+
+        Optional<Person> personResult = personRepository.findById(id);
+
+        if(personResult.isPresent()) {
+            Optional<ProductionOrder> productionOrderResult = productionOrderRepository.findByPerson(personResult.get());
+            if(productionOrderResult.isPresent()) {
+                return productionOrderResult.get();
+            }
+        }
+
+        return null;
+    }
+
+    public Optional<ProductionOrder> findProductionOrderByVehicleId(long id) {
+
+        Optional<Vehicle> vehicleResult = vehicleRepository.findById(id);
+
+        if(vehicleResult.isPresent()){
+            return productionOrderRepository.findByVehicle(vehicleResult.get());
+        }
+
+        return Optional.empty();
     }
 
     public ProductionOrder createProductionOrder(long personid, long vehicleid, ProductionOrder productionOrder) {
 
-        Optional<Person> person = personRepository.findById(personid);
-        Optional<Vehicle> vehicle = vehicleRepository.findById(vehicleid);
+        Optional<Person> personResult = personRepository.findById(personid);
+        Optional<Vehicle> vehicleResult = vehicleRepository.findById(vehicleid);
 
-        if(person.isPresent() && vehicle.isPresent()) {
-            productionOrder.setVehicle(vehicle.get());
-            productionOrder.setPerson(person.get());
+        if(personResult.isPresent() && vehicleResult.isPresent()) {
+            productionOrder.setVehicle(vehicleResult.get());
+            productionOrder.setPerson(personResult.get());
 
             return productionOrderRepository.save(productionOrder);
         }
@@ -46,19 +71,18 @@ public class ProductionOrderService {
         return null;
     }
 
-    public ProductionOrder changeProductionOrder(long productionId, Optional<Long> personid, Optional<Long> vehicleid, ProductionOrder productionOrder) {
+    public ProductionOrder updateProductionOrder(Optional<Long> personid, Optional<Long> vehicleid, ProductionOrder productionOrder) {
 
-        Optional<ProductionOrder> productionOrderToChange = productionOrderRepository.findById(productionId);
+        Optional<ProductionOrder> productionOrderResult = productionOrderRepository.findById(productionOrder.getId());
 
-        if(productionOrderToChange.isPresent()) {
-            ProductionOrder productionOrderToSet = productionOrderToChange.get();
+        if(productionOrderResult.isPresent()) {
 
             if(personid.isPresent()) {
 
                 Optional<Person> person = personRepository.findById(personid.get());
 
                 if(person.isPresent()){
-                    productionOrderToSet.setPerson(person.get());
+                    productionOrder.setPerson(person.get());
                 }
             }
 
@@ -67,29 +91,29 @@ public class ProductionOrderService {
                 Optional<Vehicle> vehicle = vehicleRepository.findById(vehicleid.get());
 
                 if(vehicle.isPresent()) {
-                    productionOrderToSet.setVehicle(vehicle.get());
+                    productionOrder.setVehicle(vehicle.get());
                 }
             }
 
-            if(productionOrder.getDescription() != null) {
-                productionOrderToSet.setDescription(productionOrder.getDescription());
+            if(productionOrder.getDescription() == null) {
+                productionOrder.setDescription(productionOrderResult.get().getDescription());
             }
 
-            if(productionOrder.getCompletionForecast() != null) {
-                productionOrderToSet.setCompletionForecast(productionOrder.getCompletionForecast());
+            if(productionOrder.getCompletionForecast() == null) {
+                productionOrder.setCompletionForecast(productionOrderResult.get().getCompletionForecast());
             }
 
-            if(productionOrder.getFinished() != null) {
-                productionOrderToSet.setFinished(productionOrder.getFinished());
+            if(productionOrder.getFinished() == null) {
+                productionOrder.setFinished(productionOrderResult.get().getFinished());
             }
 
-            return productionOrderRepository.save(productionOrderToSet);
+            return productionOrderRepository.save(productionOrder);
         }
 
         return null;
     }
 
-    public ProductionOrder deleteProductionOrder(long id) {
+    public ProductionOrder deleteProductionOrderById(long id) {
         Optional<ProductionOrder> productionOrderToDelete = productionOrderRepository.findById(id);
 
         if(productionOrderToDelete.isPresent()) {

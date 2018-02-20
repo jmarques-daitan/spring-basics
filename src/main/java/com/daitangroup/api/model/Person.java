@@ -1,14 +1,11 @@
 package com.daitangroup.api.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
+
 import javax.persistence.*;
 import java.util.Objects;
 import java.util.Set;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
 @Table(name = "person")
 public class Person {
@@ -33,8 +30,8 @@ public class Person {
     @Column(name = "phone")
     private String phone;
 
-    @OneToMany(mappedBy = "person", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Vehicle> vehicle;
+    @OneToMany(mappedBy = "person", fetch = FetchType.EAGER)
+    private Set<Vehicle> vehicles;
 
     public Long getId() {
         return id;
@@ -76,12 +73,16 @@ public class Person {
         this.phone = phone;
     }
 
-    public Set<Vehicle> getVehicle() {
-        return vehicle;
+    public Set<Vehicle> getVehicles() {
+        return vehicles;
     }
 
-    public void setVehicle(Set<Vehicle> vehicle) {
-        this.vehicle = vehicle;
+    public void setVehicles(Set<Vehicle> vehicle) {
+        this.vehicles = vehicle;
+    }
+
+    public void addVehicle(Vehicle vehicle) {
+        this.vehicles.add(vehicle);
     }
 
     @Override
@@ -94,12 +95,12 @@ public class Person {
                 Objects.equals(lastName, person.lastName) &&
                 Objects.equals(cpf, person.cpf) &&
                 Objects.equals(phone, person.phone) &&
-                Objects.equals(vehicle, person.vehicle);
+                Objects.equals(vehicles, person.vehicles);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, cpf, phone, vehicle);
+        return Objects.hash(id, firstName, lastName, cpf, phone, vehicles);
     }
 
     @Override
@@ -110,7 +111,7 @@ public class Person {
                 ", lastName='" + lastName + '\'' +
                 ", cpf='" + cpf + '\'' +
                 ", phone='" + phone + '\'' +
-                ", vehicle=" + vehicle +
+                ", vehicle=" + vehicles +
                 '}';
     }
 }

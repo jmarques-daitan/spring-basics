@@ -21,7 +21,7 @@ public class VehicleController {
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     public ResponseEntity<Vehicle> findVehicleById(@PathVariable Long id) {
 
-        Optional<Vehicle> vehicle = vehicleService.findById(id);
+        Optional<Vehicle> vehicle = vehicleService.findByVehicleId(id);
 
         if(vehicle.isPresent()) {
             return new ResponseEntity<>(vehicle.get(), HttpStatus.OK);
@@ -33,7 +33,7 @@ public class VehicleController {
     @RequestMapping(method = RequestMethod.GET, value = "/plate/{plate}")
     public ResponseEntity<Vehicle> findVehicleByPlate(@PathVariable String plate) {
 
-        Optional<Vehicle> vehicle = vehicleService.findByPlate(plate);
+        Optional<Vehicle> vehicle = vehicleService.findVehicleByPlate(plate);
 
         if(vehicle.isPresent()) {
             return new ResponseEntity<>(vehicle.get(), HttpStatus.OK);
@@ -42,24 +42,24 @@ public class VehicleController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<Iterable> findAllVehicles() {
+    @RequestMapping(method = RequestMethod.GET, value = "/person/{id}")
+    public ResponseEntity<Iterable> findVehiclesByPersonId(@PathVariable long id) {
 
-        Iterable<Vehicle> vehicles = vehicleService.findAll();
+        Iterable<Vehicle> vehiclesResult = vehicleService.findVehiclesByPersonId(id);
 
-        return new ResponseEntity<Iterable>(vehicles, HttpStatus.OK);
-    }
-
-    @RequestMapping(method = RequestMethod.GET, value = "/po/{id}")
-    public ResponseEntity<ProductionOrder> findPoSByVehicleId(@PathVariable Long id) {
-
-        Optional<ProductionOrder> productionOrder = vehicleService.findPoByVehicleId(id);
-
-        if(productionOrder.isPresent()) {
-            return new ResponseEntity<>(productionOrder.get(), HttpStatus.OK);
+        if (vehiclesResult != null && vehiclesResult.iterator().hasNext()) {
+            return new ResponseEntity<>(vehiclesResult, HttpStatus.OK);
         }
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<Iterable> findAllVehicles() {
+
+        Iterable<Vehicle> vehiclesResult = vehicleService.findAllVehicles();
+
+        return new ResponseEntity<Iterable>(vehiclesResult, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/create")
@@ -77,7 +77,8 @@ public class VehicleController {
     @RequestMapping(method = RequestMethod.POST, value = "/change/{id}")
     public ResponseEntity<Vehicle> changePerson(@PathVariable long id, @RequestBody Vehicle vehicle) {
 
-        Vehicle vehicleChanged = vehicleService.changeVehicle(id, vehicle);
+        vehicle.setId(id);
+        Vehicle vehicleChanged = vehicleService.updateVehicle(vehicle);
 
         if(vehicleChanged != null) {
             return new ResponseEntity<>(vehicleChanged, HttpStatus.OK);
@@ -88,7 +89,7 @@ public class VehicleController {
     @RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
     public ResponseEntity<Vehicle> deleteVehicle(@PathVariable long id) {
 
-        Vehicle vehicleDeleted = vehicleService.deleteVehicle(id);
+        Vehicle vehicleDeleted = vehicleService.deleteVehicleById(id);
 
         if(vehicleDeleted != null) {
             return new ResponseEntity<>(vehicleDeleted, HttpStatus.OK);

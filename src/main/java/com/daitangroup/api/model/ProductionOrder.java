@@ -21,7 +21,7 @@ public class ProductionOrder {
     private String completionForecast;
 
     @JsonProperty
-    @Column(name = "isFinihed")
+    @Column(name = "is_finished")
     private Boolean isFinished;
 
     @OneToOne

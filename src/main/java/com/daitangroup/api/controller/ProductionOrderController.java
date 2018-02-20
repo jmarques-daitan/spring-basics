@@ -20,10 +20,10 @@ public class ProductionOrderController {
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     public ResponseEntity<ProductionOrder> findProductionOrderById(@PathVariable Long id) {
 
-        Optional<ProductionOrder> productionOrder = productionOrderService.findById(id);
+        Optional<ProductionOrder> productionOrderResult = productionOrderService.findProductionOrderById(id);
 
-        if(productionOrder.isPresent()) {
-            return new ResponseEntity<>(productionOrder.get(), HttpStatus.OK);
+        if(productionOrderResult.isPresent()) {
+            return new ResponseEntity<>(productionOrderResult.get(), HttpStatus.OK);
         }
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -32,10 +32,34 @@ public class ProductionOrderController {
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Iterable> findAllProductionOrders() {
 
-        Iterable<ProductionOrder> productionOrders = productionOrderService.findAll();
+        Iterable<ProductionOrder> productionOrdersResult = productionOrderService.findAllProductionOrders();
 
-        if(productionOrders.iterator().hasNext()) {
-            return new ResponseEntity<>(productionOrders, HttpStatus.OK);
+        if(productionOrdersResult.iterator().hasNext()) {
+            return new ResponseEntity<>(productionOrdersResult, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/user/{id}")
+    public ResponseEntity<ProductionOrder> findProducionOrderByUserId(@PathVariable long id) {
+
+        ProductionOrder productionOrderResult = productionOrderService.findProductionOrderByUserId(id);
+
+        if (productionOrderResult != null) {
+            return new ResponseEntity<>(productionOrderResult, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/vehicle/{id}")
+    public ResponseEntity<ProductionOrder> findProducionOrderSByVehicleId(@PathVariable Long id) {
+
+        Optional<ProductionOrder> productionOrderResult = productionOrderService.findProductionOrderByVehicleId(id);
+
+        if(productionOrderResult.isPresent()) {
+            return new ResponseEntity<>(productionOrderResult.get(), HttpStatus.OK);
         }
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -56,7 +80,8 @@ public class ProductionOrderController {
     @RequestMapping(method = RequestMethod.POST, value = "/change")
     public ResponseEntity<ProductionOrder> changeProductionOrder(@RequestParam("productionid") long productionId, @RequestParam("personid") Optional<Long> personid, @RequestParam("vehicleid") Optional<Long> vehicleid, @RequestBody ProductionOrder productionOrder) {
 
-        ProductionOrder productionOrderChanged = productionOrderService.changeProductionOrder(productionId, personid, vehicleid, productionOrder);
+        productionOrder.setId(productionId);
+        ProductionOrder productionOrderChanged = productionOrderService.updateProductionOrder(personid, vehicleid, productionOrder);
 
         if(productionOrderChanged != null) {
             return  new ResponseEntity<>(productionOrderChanged, HttpStatus.OK);
@@ -66,9 +91,9 @@ public class ProductionOrderController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
-    public ResponseEntity<ProductionOrder> deleteProductionOrder(@PathVariable long id) {
+    public ResponseEntity<ProductionOrder> deleteProductionOrderById(@PathVariable long id) {
 
-        ProductionOrder productionOrderToDelete = productionOrderService.deleteProductionOrder(id);
+        ProductionOrder productionOrderToDelete = productionOrderService.deleteProductionOrderById(id);
 
         if(productionOrderToDelete != null) {
             return new ResponseEntity<>(productionOrderToDelete, HttpStatus.OK);
