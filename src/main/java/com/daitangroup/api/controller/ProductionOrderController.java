@@ -1,7 +1,7 @@
 package com.daitangroup.api.controller;
 
 import com.daitangroup.api.model.ProductionOrder;
-import com.daitangroup.api.services.ProductionOrderService;
+import com.daitangroup.api.services.GarageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +15,12 @@ import java.util.Optional;
 public class ProductionOrderController {
 
     @Autowired
-    ProductionOrderService productionOrderService;
+    GarageService garageService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     public ResponseEntity<ProductionOrder> findProductionOrderById(@PathVariable Long id) {
 
-        Optional<ProductionOrder> productionOrderResult = productionOrderService.findProductionOrderById(id);
+        Optional<ProductionOrder> productionOrderResult = garageService.findProductionOrderById(id);
 
         if(productionOrderResult.isPresent()) {
             return new ResponseEntity<>(productionOrderResult.get(), HttpStatus.OK);
@@ -32,7 +32,7 @@ public class ProductionOrderController {
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Iterable> findAllProductionOrders() {
 
-        Iterable<ProductionOrder> productionOrdersResult = productionOrderService.findAllProductionOrders();
+        Iterable<ProductionOrder> productionOrdersResult = garageService.findAllProductionOrders();
 
         if(productionOrdersResult.iterator().hasNext()) {
             return new ResponseEntity<>(productionOrdersResult, HttpStatus.OK);
@@ -44,7 +44,7 @@ public class ProductionOrderController {
     @RequestMapping(method = RequestMethod.GET, value = "/person/{id}")
     public ResponseEntity<ProductionOrder> findProducionOrderByPersonId(@PathVariable long id) {
 
-        ProductionOrder productionOrderResult = productionOrderService.findProductionOrderByPersonId(id);
+        ProductionOrder productionOrderResult = garageService.findProductionOrderByPersonId(id);
 
         if (productionOrderResult != null) {
             return new ResponseEntity<>(productionOrderResult, HttpStatus.OK);
@@ -56,7 +56,7 @@ public class ProductionOrderController {
     @RequestMapping(method = RequestMethod.GET, value = "/vehicle/{id}")
     public ResponseEntity<ProductionOrder> findProducionOrderSByVehicleId(@PathVariable Long id) {
 
-        Optional<ProductionOrder> productionOrderResult = productionOrderService.findProductionOrderByVehicleId(id);
+        Optional<ProductionOrder> productionOrderResult = garageService.findProductionOrderByVehicleId(id);
 
         if(productionOrderResult.isPresent()) {
             return new ResponseEntity<>(productionOrderResult.get(), HttpStatus.OK);
@@ -68,7 +68,7 @@ public class ProductionOrderController {
     @RequestMapping(method = RequestMethod.POST, value = "/create")
     public ResponseEntity<ProductionOrder> createProductionOrder(@RequestParam("personid") long personid, @RequestParam("vehicleid") long vehicleid, @RequestBody ProductionOrder productionOrder) {
 
-        ProductionOrder productionOrderSaved = productionOrderService.createProductionOrder(personid, vehicleid, productionOrder);
+        ProductionOrder productionOrderSaved = garageService.createProductionOrder(personid, vehicleid, productionOrder);
 
         if(productionOrderSaved != null) {
             return new ResponseEntity<>(productionOrderSaved, HttpStatus.OK);
@@ -81,7 +81,7 @@ public class ProductionOrderController {
     public ResponseEntity<ProductionOrder> changeProductionOrder(@RequestParam("productionid") long productionId, @RequestParam("personid") Optional<Long> personid, @RequestParam("vehicleid") Optional<Long> vehicleid, @RequestBody ProductionOrder productionOrder) {
 
         productionOrder.setId(productionId);
-        ProductionOrder productionOrderChanged = productionOrderService.updateProductionOrder(personid, vehicleid, productionOrder);
+        ProductionOrder productionOrderChanged = garageService.updateProductionOrder(personid, vehicleid, productionOrder);
 
         if(productionOrderChanged != null) {
             return  new ResponseEntity<>(productionOrderChanged, HttpStatus.OK);
@@ -93,7 +93,7 @@ public class ProductionOrderController {
     @RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
     public ResponseEntity<ProductionOrder> deleteProductionOrderById(@PathVariable long id) {
 
-        ProductionOrder productionOrderToDelete = productionOrderService.deleteProductionOrderById(id);
+        ProductionOrder productionOrderToDelete = garageService.deleteProductionOrderById(id);
 
         if(productionOrderToDelete != null) {
             return new ResponseEntity<>(productionOrderToDelete, HttpStatus.OK);
@@ -105,7 +105,7 @@ public class ProductionOrderController {
     @RequestMapping(method = RequestMethod.DELETE, value = "/deleteall")
     public ResponseEntity<String> deleteAllProductionOrders() {
 
-        productionOrderService.deleteAllProductionOrders();
+        garageService.deleteAllProductionOrders();
 
         return new ResponseEntity<String>("All production orders deleted",HttpStatus.OK);
     }

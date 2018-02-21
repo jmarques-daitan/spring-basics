@@ -1,9 +1,7 @@
 package com.daitangroup.api.controller;
 
-
-import com.daitangroup.api.model.ProductionOrder;
 import com.daitangroup.api.model.Vehicle;
-import com.daitangroup.api.services.VehicleService;
+import com.daitangroup.api.services.GarageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,12 +14,12 @@ import java.util.Optional;
 public class VehicleController {
 
     @Autowired
-    private VehicleService vehicleService;
+    private GarageService garageService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     public ResponseEntity<Vehicle> findVehicleById(@PathVariable Long id) {
 
-        Optional<Vehicle> vehicle = vehicleService.findVehicleById(id);
+        Optional<Vehicle> vehicle = garageService.findVehicleById(id);
 
         if(vehicle.isPresent()) {
             return new ResponseEntity<>(vehicle.get(), HttpStatus.OK);
@@ -33,7 +31,7 @@ public class VehicleController {
     @RequestMapping(method = RequestMethod.GET, value = "/plate/{plate}")
     public ResponseEntity<Vehicle> findVehicleByPlate(@PathVariable String plate) {
 
-        Optional<Vehicle> vehicle = vehicleService.findVehicleByPlate(plate);
+        Optional<Vehicle> vehicle = garageService.findVehicleByPlate(plate);
 
         if(vehicle.isPresent()) {
             return new ResponseEntity<>(vehicle.get(), HttpStatus.OK);
@@ -45,7 +43,7 @@ public class VehicleController {
     @RequestMapping(method = RequestMethod.GET, value = "/person/{id}")
     public ResponseEntity<Iterable> findVehiclesByPersonId(@PathVariable long id) {
 
-        Iterable<Vehicle> vehiclesResult = vehicleService.findVehiclesByPersonId(id);
+        Iterable<Vehicle> vehiclesResult = garageService.findVehiclesByPersonId(id);
 
         if (vehiclesResult != null && vehiclesResult.iterator().hasNext()) {
             return new ResponseEntity<>(vehiclesResult, HttpStatus.OK);
@@ -57,7 +55,7 @@ public class VehicleController {
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Iterable> findAllVehicles() {
 
-        Iterable<Vehicle> vehiclesResult = vehicleService.findAllVehicles();
+        Iterable<Vehicle> vehiclesResult = garageService.findAllVehicles();
 
         return new ResponseEntity<Iterable>(vehiclesResult, HttpStatus.OK);
     }
@@ -65,7 +63,7 @@ public class VehicleController {
     @RequestMapping(method = RequestMethod.POST, value = "/create")
     public ResponseEntity<Vehicle> createVehicle(@RequestBody Vehicle vehicle) {
 
-        Vehicle vehicleCreated = vehicleService.createVehicle(vehicle);
+        Vehicle vehicleCreated = garageService.createVehicle(vehicle);
 
         if(vehicleCreated != null) {
             return new ResponseEntity<>(vehicleCreated, HttpStatus.OK);
@@ -78,7 +76,7 @@ public class VehicleController {
     public ResponseEntity<Vehicle> changePerson(@PathVariable long id, @RequestBody Vehicle vehicle) {
 
         vehicle.setId(id);
-        Vehicle vehicleChanged = vehicleService.updateVehicle(vehicle);
+        Vehicle vehicleChanged = garageService.updateVehicle(vehicle);
 
         if(vehicleChanged != null) {
             return new ResponseEntity<>(vehicleChanged, HttpStatus.OK);
@@ -89,7 +87,7 @@ public class VehicleController {
     @RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
     public ResponseEntity<Vehicle> deleteVehicle(@PathVariable long id) {
 
-        Vehicle vehicleDeleted = vehicleService.deleteVehicleById(id);
+        Vehicle vehicleDeleted = garageService.deleteVehicleById(id);
 
         if(vehicleDeleted != null) {
             return new ResponseEntity<>(vehicleDeleted, HttpStatus.OK);
@@ -101,7 +99,7 @@ public class VehicleController {
     @RequestMapping(method = RequestMethod.DELETE, value = "/deleteall")
     public ResponseEntity<String> deleteAllVehicles() {
 
-        vehicleService.deleteAllVehicles();
+        garageService.deleteAllVehicles();
 
         return new ResponseEntity<String>("All vehicles deleted",HttpStatus.OK);
     }
