@@ -77,8 +77,8 @@ public class ProductionOrderController {
         return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/change")
-    public ResponseEntity<ProductionOrder> changeProductionOrder(@RequestParam("productionid") long productionId, @RequestParam("personid") Optional<Long> personid, @RequestParam("vehicleid") Optional<Long> vehicleid, @RequestBody ProductionOrder productionOrder) {
+    @RequestMapping(method = RequestMethod.POST, value = "/update")
+    public ResponseEntity<ProductionOrder> updateProductionOrder(@RequestParam("productionid") long productionId, @RequestParam("personid") Optional<Long> personid, @RequestParam("vehicleid") Optional<Long> vehicleid, @RequestBody ProductionOrder productionOrder) {
 
         productionOrder.setId(productionId);
         ProductionOrder productionOrderChanged = garageService.updateProductionOrder(personid, vehicleid, productionOrder);

@@ -76,7 +76,7 @@ public class PersonController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/change/{id}")
+    @RequestMapping(method = RequestMethod.POST, value = "/update/{id}")
     public ResponseEntity<Person> updatePerson(@PathVariable long id, @RequestBody Person person) {
 
         person.setId(id);

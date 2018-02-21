@@ -72,8 +72,8 @@ public class VehicleController {
         return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/change/{id}")
-    public ResponseEntity<Vehicle> changePerson(@PathVariable long id, @RequestBody Vehicle vehicle) {
+    @RequestMapping(method = RequestMethod.POST, value = "/update/{id}")
+    public ResponseEntity<Vehicle> updatePerson(@PathVariable long id, @RequestBody Vehicle vehicle) {
 
         vehicle.setId(id);
         Vehicle vehicleChanged = garageService.updateVehicle(vehicle);
