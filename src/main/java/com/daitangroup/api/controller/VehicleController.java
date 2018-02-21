@@ -21,7 +21,7 @@ public class VehicleController {
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     public ResponseEntity<Vehicle> findVehicleById(@PathVariable Long id) {
 
-        Optional<Vehicle> vehicle = vehicleService.findByVehicleId(id);
+        Optional<Vehicle> vehicle = vehicleService.findVehicleById(id);
 
         if(vehicle.isPresent()) {
             return new ResponseEntity<>(vehicle.get(), HttpStatus.OK);

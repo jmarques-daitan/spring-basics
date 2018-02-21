@@ -41,10 +41,10 @@ public class ProductionOrderController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/user/{id}")
-    public ResponseEntity<ProductionOrder> findProducionOrderByUserId(@PathVariable long id) {
+    @RequestMapping(method = RequestMethod.GET, value = "/person/{id}")
+    public ResponseEntity<ProductionOrder> findProducionOrderByPersonId(@PathVariable long id) {
 
-        ProductionOrder productionOrderResult = productionOrderService.findProductionOrderByUserId(id);
+        ProductionOrder productionOrderResult = productionOrderService.findProductionOrderByPersonId(id);
 
         if (productionOrderResult != null) {
             return new ResponseEntity<>(productionOrderResult, HttpStatus.OK);

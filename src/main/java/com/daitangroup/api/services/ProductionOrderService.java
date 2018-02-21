@@ -31,7 +31,7 @@ public class ProductionOrderService {
         return productionOrderRepository.findAll();
     }
 
-    public ProductionOrder findProductionOrderByUserId(long id) {
+    public ProductionOrder findProductionOrderByPersonId(long id) {
 
         Optional<Person> personResult = personRepository.findById(id);
 

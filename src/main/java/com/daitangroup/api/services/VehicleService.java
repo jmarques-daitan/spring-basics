@@ -22,7 +22,7 @@ public class VehicleService {
     @Autowired
     private PersonRepository personRepository;
 
-    public Optional<Vehicle> findByVehicleId(long id) {
+    public Optional<Vehicle> findVehicleById(long id) {
         return vehicleRepository.findById(id);
     }
 
