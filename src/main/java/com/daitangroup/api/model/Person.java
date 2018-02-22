@@ -1,6 +1,7 @@
 package com.daitangroup.api.model;
 
 import com.fasterxml.jackson.annotation.*;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -34,6 +35,7 @@ public class Person {
     private String phone;
 
     @OneToMany(mappedBy = "person", fetch = FetchType.EAGER)
+    @JsonIgnoreProperties({"vehicles","vehicle"})
     private Set<Vehicle> vehicles;
 
     public Long getId() {

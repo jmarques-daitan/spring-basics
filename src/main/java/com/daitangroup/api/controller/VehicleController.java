@@ -5,8 +5,11 @@ import com.daitangroup.api.services.GarageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import java.util.Optional;
 
 @RestController
@@ -96,12 +99,12 @@ public class VehicleController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/deleteall")
+    @RequestMapping(method = RequestMethod.DELETE, value = "/delete-all")
     public ResponseEntity<String> deleteAllVehicles() {
 
         garageService.deleteAllVehicles();
 
-        return new ResponseEntity<String>("All vehicles deleted",HttpStatus.OK);
+        return new ResponseEntity<String>("All vehicles deleted", HttpStatus.OK);
     }
 
 }

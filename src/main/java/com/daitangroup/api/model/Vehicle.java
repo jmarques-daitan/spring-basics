@@ -29,6 +29,7 @@ public class Vehicle {
     private String color;
 
     @ManyToOne
+    @JsonIgnoreProperties("vehicles")
     @JoinColumn(name = "person_id")
     private Person person;
 

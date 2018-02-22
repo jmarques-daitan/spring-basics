@@ -1,5 +1,6 @@
 package com.daitangroup.api.services;
 
+import com.daitangroup.api.exception.CpfAlreadyRegistredException;
 import com.daitangroup.api.model.Person;
 import com.daitangroup.api.model.ProductionOrder;
 import com.daitangroup.api.model.Vehicle;
@@ -40,12 +41,12 @@ public class GarageService {
         return personRepository.findByCpf(cpf);
     }
 
-    public Person createPerson(Person person) {
+    public Person createPerson(Person person) throws CpfAlreadyRegistredException {
 
         Optional<Person> personToCheck = personRepository.findByCpf(person.getCpf());
 
         if(personToCheck.isPresent()){
-            return null;
+            throw new CpfAlreadyRegistredException("This CPF is already in use");
         }
 
         return personRepository.save(person);

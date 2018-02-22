@@ -5,13 +5,16 @@ import com.daitangroup.api.services.GarageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/productionorders")
+@RequestMapping("/production-orders")
 public class ProductionOrderController {
 
     @Autowired
@@ -102,11 +105,11 @@ public class ProductionOrderController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/deleteall")
+    @RequestMapping(method = RequestMethod.DELETE, value = "/delete-all")
     public ResponseEntity<String> deleteAllProductionOrders() {
 
         garageService.deleteAllProductionOrders();
 
-        return new ResponseEntity<String>("All production orders deleted",HttpStatus.OK);
+        return new ResponseEntity<String>("All production orders deleted", HttpStatus.OK);
     }
 }
