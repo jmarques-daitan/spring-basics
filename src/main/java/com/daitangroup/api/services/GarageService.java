@@ -1,6 +1,6 @@
 package com.daitangroup.api.services;
 
-import com.daitangroup.api.exception.CpfAlreadyRegistredException;
+import com.daitangroup.api.exception.CpfAlreadyRegisteredException;
 import com.daitangroup.api.model.Person;
 import com.daitangroup.api.model.ProductionOrder;
 import com.daitangroup.api.model.Vehicle;
@@ -10,6 +10,7 @@ import com.daitangroup.api.repository.VehicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -41,12 +42,12 @@ public class GarageService {
         return personRepository.findByCpf(cpf);
     }
 
-    public Person createPerson(Person person) throws CpfAlreadyRegistredException {
+    public Person createPerson(Person person) throws CpfAlreadyRegisteredException {
 
         Optional<Person> personToCheck = personRepository.findByCpf(person.getCpf());
 
         if(personToCheck.isPresent()){
-            throw new CpfAlreadyRegistredException("This CPF is already in use");
+            throw new CpfAlreadyRegisteredException("This CPF is already in use");
         }
 
         return personRepository.save(person);
@@ -58,10 +59,17 @@ public class GarageService {
         Optional<Vehicle> vehicleResult = vehicleRepository.findById(vehicleId);
 
         if(personResult.isPresent() && vehicleResult.isPresent()) {
-            Set<Vehicle> vehicles = personResult.get().getVehicles();
             Person personPresent = personResult.get();
             Vehicle vehiclePresent = vehicleResult.get();
+            Set<Vehicle> vehicles = new HashSet<Vehicle>();
+
             vehiclePresent.setPerson(personPresent);
+
+            vehicles.add(vehiclePresent);
+
+            personPresent.setVehicles(vehicles);
+
+            //personRepository.save(personPresent);
             vehicleRepository.save(vehiclePresent);
             return personPresent;
         }

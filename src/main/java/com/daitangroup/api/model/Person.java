@@ -34,8 +34,8 @@ public class Person {
     @Column(name = "phone")
     private String phone;
 
-    @OneToMany(mappedBy = "person", fetch = FetchType.EAGER)
-    @JsonIgnoreProperties({"vehicles","vehicle"})
+    @OneToMany(mappedBy = "person", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonIgnoreProperties({"vehicles", "vehicle"})
     private Set<Vehicle> vehicles;
 
     public Long getId() {

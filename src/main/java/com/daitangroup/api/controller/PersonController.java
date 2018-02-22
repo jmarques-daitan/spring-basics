@@ -1,6 +1,6 @@
 package com.daitangroup.api.controller;
 
-import com.daitangroup.api.exception.CpfAlreadyRegistredException;
+import com.daitangroup.api.exception.CpfAlreadyRegisteredException;
 import com.daitangroup.api.model.Person;
 import com.daitangroup.api.model.PersonReturn;
 import com.daitangroup.api.services.GarageService;
@@ -68,11 +68,11 @@ public class PersonController {
             personToReturn.setPerson(personSaved);
             return new ResponseEntity<>(personToReturn, HttpStatus.OK);
 
-        } catch (CpfAlreadyRegistredException ex) {
+        } catch (CpfAlreadyRegisteredException ex) {
 
             personToReturn.setPerson(person);
             personToReturn.setErrorMessage(ex.getMessage());
-            return new ResponseEntity<>(personToReturn, HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(personToReturn, HttpStatus.CONFLICT);
         }
 
     }
