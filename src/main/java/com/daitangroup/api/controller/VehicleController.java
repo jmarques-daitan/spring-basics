@@ -19,6 +19,14 @@ public class VehicleController {
     @Autowired
     private GarageService garageService;
 
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<Iterable> findAllVehicles() {
+
+        Iterable<Vehicle> vehiclesResult = garageService.findAllVehicles();
+
+        return new ResponseEntity<>(vehiclesResult, HttpStatus.OK);
+    }
+
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     public ResponseEntity<Vehicle> findVehicleById(@PathVariable Long id) {
 
@@ -53,14 +61,6 @@ public class VehicleController {
         }
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<Iterable> findAllVehicles() {
-
-        Iterable<Vehicle> vehiclesResult = garageService.findAllVehicles();
-
-        return new ResponseEntity<Iterable>(vehiclesResult, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/create")

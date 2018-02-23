@@ -184,6 +184,8 @@ public class GarageService {
                 if(person.isPresent()){
                     productionOrder.setPerson(person.get());
                 }
+            } else {
+                productionOrder.setPerson(productionOrderResult.get().getPerson());
             }
 
             if(vehicleid.isPresent()) {
@@ -193,6 +195,9 @@ public class GarageService {
                 if(vehicle.isPresent()) {
                     productionOrder.setVehicle(vehicle.get());
                 }
+
+            } else {
+                productionOrder.setVehicle(productionOrderResult.get().getVehicle());
             }
 
             if(productionOrder.getDescription() == null) {

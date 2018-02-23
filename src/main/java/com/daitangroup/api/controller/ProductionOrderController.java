@@ -20,6 +20,14 @@ public class ProductionOrderController {
     @Autowired
     GarageService garageService;
 
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<Iterable> findAllProductionOrders() {
+
+        Iterable<ProductionOrder> productionOrdersResult = garageService.findAllProductionOrders();
+
+        return new ResponseEntity<>(productionOrdersResult, HttpStatus.OK);
+    }
+
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     public ResponseEntity<ProductionOrder> findProductionOrderById(@PathVariable Long id) {
 
@@ -27,18 +35,6 @@ public class ProductionOrderController {
 
         if(productionOrderResult.isPresent()) {
             return new ResponseEntity<>(productionOrderResult.get(), HttpStatus.OK);
-        }
-
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<Iterable> findAllProductionOrders() {
-
-        Iterable<ProductionOrder> productionOrdersResult = garageService.findAllProductionOrders();
-
-        if(productionOrdersResult.iterator().hasNext()) {
-            return new ResponseEntity<>(productionOrdersResult, HttpStatus.OK);
         }
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);

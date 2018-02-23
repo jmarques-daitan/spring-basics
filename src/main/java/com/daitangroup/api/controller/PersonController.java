@@ -22,6 +22,14 @@ public class PersonController {
     @Autowired
     private GarageService garageService;
 
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<Iterable> findAllPersons() {
+
+        Iterable<Person> personsResult = garageService.findAllPersons();
+
+        return new ResponseEntity<>(personsResult, HttpStatus.OK);
+    }
+
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     public ResponseEntity<Person> findPersonById(@PathVariable Long id) {
 
@@ -29,18 +37,6 @@ public class PersonController {
 
         if (personResult.isPresent()) {
             return new ResponseEntity<>(personResult.get(), HttpStatus.OK);
-        }
-
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<Iterable> findAllPersons() {
-
-        Iterable<Person> personsResult = garageService.findAllPersons();
-
-        if (personsResult.iterator().hasNext()) {
-            return new ResponseEntity<>(personsResult, HttpStatus.OK);
         }
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
