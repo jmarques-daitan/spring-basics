@@ -17,14 +17,20 @@ import java.util.Set;
 @Service
 public class GarageService {
 
-    @Autowired
     private PersonRepository personRepository;
 
-    @Autowired
     private ProductionOrderRepository productionOrderRepository;
 
-    @Autowired
     private VehicleRepository vehicleRepository;
+
+    @Autowired
+    public GarageService(PersonRepository personRepository,
+                         ProductionOrderRepository productionOrderRepository,
+                         VehicleRepository vehicleRepository) {
+        this.personRepository = personRepository;
+        this.productionOrderRepository = productionOrderRepository;
+        this.vehicleRepository = vehicleRepository;
+    }
 
     /**
      * Person methods
