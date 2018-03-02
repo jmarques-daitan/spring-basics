@@ -5,7 +5,6 @@ import com.daitangroup.api.model.Person;
 import com.daitangroup.api.repository.PersonRepository;
 import com.daitangroup.api.repository.ProductionOrderRepository;
 import com.daitangroup.api.repository.VehicleRepository;
-import org.junit.Before;
 import org.junit.Test;
 import java.util.Optional;
 import static org.junit.Assert.assertEquals;
@@ -15,13 +14,13 @@ import static org.mockito.Mockito.when;
 
 public class GarageServiceTest {
 
-    PersonRepository personRepository = mock(PersonRepository.class);
-    VehicleRepository vehicleRepository = mock(VehicleRepository.class);
-    ProductionOrderRepository productionOrderRepository = mock(ProductionOrderRepository.class);
-    GarageService garageService = new GarageService(personRepository,productionOrderRepository,vehicleRepository);
+    private PersonRepository personRepository = mock(PersonRepository.class);
+    private VehicleRepository vehicleRepository = mock(VehicleRepository.class);
+    private ProductionOrderRepository productionOrderRepository = mock(ProductionOrderRepository.class);
+    private GarageService garageService = new GarageService(personRepository,productionOrderRepository,vehicleRepository);
 
     @Test(expected = CpfAlreadyRegisteredException.class)
-    public void testWhenCpfAlreadyRegisteredThrowException() throws CpfAlreadyRegisteredException {
+    public void shouldFailWhenRegisteringANewPersonWithAlreadyRegisteredCpf() throws CpfAlreadyRegisteredException {
 
         Person existingPerson = new Person();
         existingPerson.setCpf("22");

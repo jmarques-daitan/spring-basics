@@ -23,6 +23,6 @@ public class GaragePerson extends JUnitStory {
 
     @Override
     public InjectableStepsFactory stepsFactory() {
-        return new InstanceStepsFactory(configuration(), new GaragePersonSteps());
+        return new InstanceStepsFactory(configuration(), "integrationtests.jbehave.step");
     }
 }

@@ -9,14 +9,15 @@ import org.jbehave.core.annotations.When;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Optional;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class GaragePersonSteps {
 
     @Autowired
-    GarageService garageService;
+    private GarageService garageService;
 
-    Person person;
+    private Person person;
 
     @Given("a person named $name with the cpf $cpf")
     public void createAPerson(String name, String cpf) {
@@ -25,7 +26,7 @@ public class GaragePersonSteps {
         person.setCpf(cpf);
     }
 
-    @When("i save this person on the database")
+    @When("I save this person on the database")
     public void saveThePerson() {
         try {
             garageService.createPerson(person);
@@ -34,13 +35,11 @@ public class GaragePersonSteps {
         }
     }
 
-    @Then("i retrive this person passing the cpf $cpf")
+    @Then("I retrive this person passing the cpf $cpf")
     public void retriveThePerson(String cpf) {
         Optional<Person> personRetrived = garageService.findPersonByCpf(cpf);
-        if(personRetrived.isPresent()) {
-            assertEquals(person, personRetrived);
-        } else {
-            fail("The person was not found");
-        }
+
+            assertTrue(personRetrived.isPresent());
+            assertEquals(person, personRetrived.get());
     }
 }
